@@ -46,7 +46,33 @@ public class DipendenteService {
             DipendenteDTO dipendenteDTO = fromDipendenteToDipendenteDTO(dipendente.get());
             return dipendenteDTO;
         }else{
-            throw new RuntimeException("nessun dipendente trovato con l id richiesto")
+            throw new RuntimeException("nessun dipendente trovato con l id richiesto");
+        }
+    }
+
+    //modifica dipendente( put )
+    public void modificaDipendente(DipendenteDTO dipendenteDTO, long id){
+        Optional<Dipendente> dipendenteTrovato = dipendenteDAO.findById(id);
+        if (dipendenteTrovato.isPresent()){
+            Dipendente dipendente = dipendenteTrovato.get();
+            dipendente.setUsername(dipendenteDTO.getUsername());
+            dipendente.setNome(dipendenteDTO.getNome());
+            dipendente.setCognome(dipendenteDTO.getCognome());
+            dipendente.setEmail(dipendenteDTO.getEmail());
+            dipendenteDAO.save(dipendente);
+
+        }else{
+            throw new RuntimeException("nessun dipendente trovato con l id richiesto! errore nella modifica");
+        }
+    }
+
+    //eliminare dipendenti( delete )
+    public void eliminaDipendente(long id){
+        Optional<Dipendente> dipendenteTrovato = dipendenteDAO.findById(id);
+        if (dipendenteTrovato.isPresent()){
+            dipendenteDAO.deleteById(id);
+        }else{
+            throw new RuntimeException("nessun dipendente trovato conl id richiesto! errore nell eliminazione");
         }
     }
 
