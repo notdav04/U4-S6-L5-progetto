@@ -59,6 +59,7 @@ public class DipendenteService {
             dipendente.setNome(dipendenteDTO.getNome());
             dipendente.setCognome(dipendenteDTO.getCognome());
             dipendente.setEmail(dipendenteDTO.getEmail());
+//            dipendente.setAvatar(dipendenteDTO.getAvatar());
             dipendenteDAO.save(dipendente);
 
         }else{
