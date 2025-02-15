@@ -1,10 +1,13 @@
 package com.example.U4_S6_L5_progetto.payload;
 
+import com.example.U4_S6_L5_progetto.entity.Prenotazione;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
+
+import java.util.List;
 
 @Data
 public class DipendenteDTO {
@@ -26,5 +29,7 @@ public class DipendenteDTO {
 
     @URL
     private String avatar;
+
+//    private List<Prenotazione> listaPrenotazioni;
 
 }

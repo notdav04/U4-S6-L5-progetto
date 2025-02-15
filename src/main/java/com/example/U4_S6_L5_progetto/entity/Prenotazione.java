@@ -18,10 +18,13 @@ public class Prenotazione {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "viaggio_id")
     private Viaggio viaggio;
 
     @ManyToOne
+    @JoinColumn(name = "dipendente_id")
     private Dipendente dipendente;
+
     @Column(nullable = false)
     private LocalDate data;
 

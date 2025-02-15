@@ -1,6 +1,7 @@
 package com.example.U4_S6_L5_progetto.controller;
 
 
+import com.example.U4_S6_L5_progetto.entity.StatoViaggio;
 import com.example.U4_S6_L5_progetto.payload.ViaggioDTO;
 import com.example.U4_S6_L5_progetto.service.ViaggioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,10 +61,25 @@ public class ViaggioController {
         }
     }
 
+    //PUT PER ASSEGNAZIONE DIPENDENTE
+    @PutMapping("/assegnaDipendente/{id_viaggio}/{id_dipendente}")
+    public ResponseEntity<?> assegnaDipendenteAViaggio(@PathVariable long id_viaggio, @PathVariable long id_dipendente){
+        viaggioService.addDipendente(id_viaggio, id_dipendente);
+        return new ResponseEntity<>("dipendente con id: " + id_dipendente + " aggiunto al viaggio con id: " + id_viaggio, HttpStatus.OK);
+    }
+//HO IMPLEMENTATO LA MODIFICA STATO COSI, L UNICO "PROBLEMA" è CHE IN POSTMAN NEL BODY DEVO INVIARE STRINGA PURE E NON JSON
+    @PatchMapping("/modificaStato/{id}")
+    public  ResponseEntity<?> modificaStatoViaggio(@RequestBody StatoViaggio stato, @PathVariable long id){
+        viaggioService.modificaStato(id, stato);
+        return new ResponseEntity<>("stato viaggio modificato correttamente", HttpStatus.OK);
+    }
+
     //DELETE
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteViaggio(@PathVariable long id){
         viaggioService.eliminaViaggio(id);
         return new ResponseEntity<>("Viaggio eliminato con successo", HttpStatus.OK);
     }
+
+
 }

@@ -29,6 +29,7 @@ public class Viaggio {
     @Column(nullable = false)
     private StatoViaggio stato;
 
-    @OneToMany
-    private List<Prenotazione> prenotazioni = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "dipendente_id")
+    public Dipendente dipendente;
 }

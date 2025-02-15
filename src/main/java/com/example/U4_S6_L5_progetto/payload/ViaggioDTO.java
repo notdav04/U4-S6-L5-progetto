@@ -1,5 +1,6 @@
 package com.example.U4_S6_L5_progetto.payload;
 
+import com.example.U4_S6_L5_progetto.entity.Dipendente;
 import com.example.U4_S6_L5_progetto.entity.StatoViaggio;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,8 @@ public class ViaggioDTO {
 
     @NotNull(message = "il campo stato è obbligatorio")
     private StatoViaggio stato;
+
+    private Dipendente dipendente;
 
 
 }

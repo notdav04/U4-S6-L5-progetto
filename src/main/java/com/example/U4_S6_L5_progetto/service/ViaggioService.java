@@ -1,8 +1,12 @@
 package com.example.U4_S6_L5_progetto.service;
 
 
+import com.example.U4_S6_L5_progetto.entity.Dipendente;
+import com.example.U4_S6_L5_progetto.entity.StatoViaggio;
 import com.example.U4_S6_L5_progetto.entity.Viaggio;
+import com.example.U4_S6_L5_progetto.payload.DipendenteDTO;
 import com.example.U4_S6_L5_progetto.payload.ViaggioDTO;
+import com.example.U4_S6_L5_progetto.repository.DipendenteDAORepository;
 import com.example.U4_S6_L5_progetto.repository.ViaggioDAORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,10 @@ public class ViaggioService {
 
     @Autowired
     ViaggioDAORepository viaggioDao;
+
+    @Autowired
+    DipendenteDAORepository dipendenteDao;
+
 
     //metodi dao
 
@@ -76,15 +84,41 @@ public class ViaggioService {
         }
     }
 
+    //assegna dipendente a viaggio
+    public void addDipendente(long viaggio_id, long dipendente_id){
+        Optional<Viaggio> viaggio = viaggioDao.findById(viaggio_id);
+        Optional<Dipendente> dipendente = dipendenteDao.findById(dipendente_id);
+        if(viaggio.isPresent() && dipendente.isPresent()){
+            Viaggio viaggioTrovato = viaggio.get();
+
+            Dipendente dipendenteTrovato = dipendente.get();
+            viaggioTrovato.setDipendente(dipendenteTrovato);
+            viaggioDao.save(viaggioTrovato);
+        }else {
+            throw new RuntimeException("Viaggio o dipendente non trovato con gli id richiesti");
+        }
+    }
+//modifica stato viaggio
+    public void modificaStato(long id, StatoViaggio stato){
+        Optional<Viaggio> viaggio = viaggioDao.findById(id);
+        if (viaggio.isPresent()){
+            Viaggio viaggioTrovato = viaggio.get();
+            viaggioTrovato.setStato(stato);
+            viaggioDao.save(viaggioTrovato);
+        }else {
+            throw new RuntimeException("viaggio non trovato con id richiesto");
+        }
+    }
 
 
-    //metodi dto
+
     //travasi DTO
     public Viaggio fromViaggioDTOToEntity(ViaggioDTO viaggioDTO) {
         Viaggio viaggio = new Viaggio();
         viaggio.setDestinazione(viaggioDTO.getDestinazione());
         viaggio.setStato(viaggioDTO.getStato());
         viaggio.setData(viaggioDTO.getData());
+        viaggio.setDipendente(viaggioDTO.getDipendente());
         return viaggio;
     }
 
@@ -93,6 +127,7 @@ public class ViaggioService {
         viaggioDTO.setDestinazione(viaggio.getDestinazione());
         viaggioDTO.setStato(viaggio.getStato());
         viaggioDTO.setData(viaggio.getData());
+        viaggioDTO.setDipendente(viaggio.getDipendente());
         return viaggioDTO;
     }
 }
