@@ -98,7 +98,7 @@ public class DipendenteController {
         }
     }
 
-    //CREAZIONE PRENOTAZIONE
+    //CREAZIONE PRENOTAZIONE( POST )
     @PostMapping("/creaPrenotazione")
     public ResponseEntity<?> creaPrenotazione( @RequestBody @Validated PrenotazioneDTO prenotazioneDTO, BindingResult validation){
         if (validation.hasErrors()){
@@ -110,9 +110,7 @@ public class DipendenteController {
         }else{
             dipendenteService.creaPrenotazione( prenotazioneDTO);
             return new ResponseEntity<>("prenotazione creata correttamente", HttpStatus.CREATED);
-
         }
-
     }
 
     //DELETE

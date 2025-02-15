@@ -93,16 +93,23 @@ public class DipendenteService {
     //creazione prenotazione
     public void creaPrenotazione(PrenotazioneDTO prenotazioneDTO){
         Optional<Dipendente> dipendenteTrovato = dipendenteDAO.findById(prenotazioneDTO.getFk_dipendente());
+
         Optional<Viaggio> viaggioTrovato = viaggioDAO.findById(prenotazioneDTO.getFk_viaggio());
         if (dipendenteTrovato.isPresent() && viaggioTrovato.isPresent()){
             Dipendente dipendente = dipendenteTrovato.get();
             Viaggio viaggio = viaggioTrovato.get();
-            Prenotazione nuovaPrenotazione = new Prenotazione();
-            nuovaPrenotazione.setDipendente(dipendente);
-            nuovaPrenotazione.setViaggio(viaggio);
-            nuovaPrenotazione.setData(prenotazioneDTO.getData());
-            nuovaPrenotazione.setNoteDipendente(prenotazioneDTO.getNoteDipendente());
-            prenotazioneDAO.save(nuovaPrenotazione);
+
+            if (!prenotazioneDAO.findByDataAndDipendente( prenotazioneDTO.getData(), dipendente).isEmpty()){
+                throw new RuntimeException("il dipendente ha gia una prenotazione per la data richiesta");
+            }else{
+                Prenotazione nuovaPrenotazione = new Prenotazione();
+                nuovaPrenotazione.setDipendente(dipendente);
+                nuovaPrenotazione.setViaggio(viaggio);
+                nuovaPrenotazione.setData(prenotazioneDTO.getData());
+                nuovaPrenotazione.setNoteDipendente(prenotazioneDTO.getNoteDipendente());
+                prenotazioneDAO.save(nuovaPrenotazione);
+            }
+
         }else{
             throw new RuntimeException("nessun dipendente o viaggio trovato con gli id richiesti!");
         }
