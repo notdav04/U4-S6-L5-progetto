@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.U4_S6_L5_progetto.entity.Dipendente;
 import com.example.U4_S6_L5_progetto.payload.DipendenteDTO;
+import com.example.U4_S6_L5_progetto.payload.PrenotazioneDTO;
 import com.example.U4_S6_L5_progetto.service.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -95,6 +96,23 @@ public class DipendenteController {
             dipendenteService.modificaDipendente(dipendenteDTO, id);
             return new ResponseEntity<>("dipendente modificato con successo", HttpStatus.OK );
         }
+    }
+
+    //CREAZIONE PRENOTAZIONE
+    @PostMapping("/creaPrenotazione")
+    public ResponseEntity<?> creaPrenotazione( @RequestBody @Validated PrenotazioneDTO prenotazioneDTO, BindingResult validation){
+        if (validation.hasErrors()){
+            String message = "ERRORE DI VALIDAZIONE \n";
+            for (ObjectError errore : validation.getAllErrors()){
+                message += errore.getDefaultMessage() + "\n";
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }else{
+            dipendenteService.creaPrenotazione( prenotazioneDTO);
+            return new ResponseEntity<>("prenotazione creata correttamente", HttpStatus.CREATED);
+
+        }
+
     }
 
     //DELETE

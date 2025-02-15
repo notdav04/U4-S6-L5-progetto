@@ -1,10 +1,14 @@
 package com.example.U4_S6_L5_progetto.service;
 
 import com.example.U4_S6_L5_progetto.entity.Dipendente;
+import com.example.U4_S6_L5_progetto.entity.Prenotazione;
 import com.example.U4_S6_L5_progetto.entity.Viaggio;
 import com.example.U4_S6_L5_progetto.payload.DipendenteDTO;
+import com.example.U4_S6_L5_progetto.payload.PrenotazioneDTO;
 import com.example.U4_S6_L5_progetto.payload.ViaggioDTO;
 import com.example.U4_S6_L5_progetto.repository.DipendenteDAORepository;
+import com.example.U4_S6_L5_progetto.repository.PrenotazioneDAORepository;
+import com.example.U4_S6_L5_progetto.repository.ViaggioDAORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +25,11 @@ public class DipendenteService {
 
     @Autowired
     DipendenteDAORepository dipendenteDAO;
+
+    @Autowired
+    ViaggioDAORepository viaggioDAO;
+    @Autowired
+    PrenotazioneDAORepository prenotazioneDAO;
 
     //metodi dao
 
@@ -78,6 +87,24 @@ public class DipendenteService {
             dipendenteDAO.deleteById(id);
         }else{
             throw new RuntimeException("nessun dipendente trovato conl id richiesto! errore nell eliminazione");
+        }
+    }
+
+    //creazione prenotazione
+    public void creaPrenotazione(PrenotazioneDTO prenotazioneDTO){
+        Optional<Dipendente> dipendenteTrovato = dipendenteDAO.findById(prenotazioneDTO.getFk_dipendente());
+        Optional<Viaggio> viaggioTrovato = viaggioDAO.findById(prenotazioneDTO.getFk_viaggio());
+        if (dipendenteTrovato.isPresent() && viaggioTrovato.isPresent()){
+            Dipendente dipendente = dipendenteTrovato.get();
+            Viaggio viaggio = viaggioTrovato.get();
+            Prenotazione nuovaPrenotazione = new Prenotazione();
+            nuovaPrenotazione.setDipendente(dipendente);
+            nuovaPrenotazione.setViaggio(viaggio);
+            nuovaPrenotazione.setData(prenotazioneDTO.getData());
+            nuovaPrenotazione.setNoteDipendente(prenotazioneDTO.getNoteDipendente());
+            prenotazioneDAO.save(nuovaPrenotazione);
+        }else{
+            throw new RuntimeException("nessun dipendente o viaggio trovato con gli id richiesti!");
         }
     }
 
