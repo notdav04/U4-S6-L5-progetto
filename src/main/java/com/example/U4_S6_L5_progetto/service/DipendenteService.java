@@ -101,7 +101,9 @@ public class DipendenteService {
 
             if (!prenotazioneDAO.findByDataAndDipendente( prenotazioneDTO.getData(), dipendente).isEmpty()){
                 throw new RuntimeException("il dipendente ha gia una prenotazione per la data richiesta");
-            }else{
+            }else if(!prenotazioneDAO.findByDipendente(dipendente).isEmpty()){
+                    throw new RuntimeException("il dipendente ha gia prenotato un viaggio");
+                }else{
                 Prenotazione nuovaPrenotazione = new Prenotazione();
                 nuovaPrenotazione.setDipendente(dipendente);
                 nuovaPrenotazione.setViaggio(viaggio);
@@ -122,6 +124,7 @@ public class DipendenteService {
         dipendente.setNome(dipendenteDTO.getNome());
         dipendente.setCognome(dipendenteDTO.getCognome());
         dipendente.setEmail(dipendenteDTO.getEmail());
+        dipendente.setAvatar(dipendenteDTO.getAvatar());
         return dipendente;
     }
 
@@ -131,6 +134,7 @@ public class DipendenteService {
         dipendenteDTO.setNome(dipendente.getNome());
         dipendenteDTO.setCognome(dipendente.getCognome());
         dipendenteDTO.setEmail(dipendente.getEmail());
+        dipendenteDTO.setAvatar(dipendente.getAvatar());
         return dipendenteDTO;
     }
 }

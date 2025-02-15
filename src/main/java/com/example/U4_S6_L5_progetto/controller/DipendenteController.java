@@ -28,8 +28,8 @@ public class DipendenteController {
     @Autowired
     DipendenteService dipendenteService;
 
-//    @Autowired
-//    Cloudinary configurazioneCloud;
+    @Autowired
+    Cloudinary configurazioneCloud;
 
     //metodi CRUD
     //POST
@@ -48,26 +48,28 @@ public class DipendenteController {
     }
 
     //------------------POST CON IMMAGINE AVATAR DIPENDENTE------------
-//    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = "application/json")
-//    public ResponseEntity<?> postDipendenteAvatar(@RequestPart("avatar")MultipartFile avatar, @RequestPart @Validated DipendenteDTO dipendenteDTO, BindingResult validation){
-//        if (validation.hasErrors()){
-//            String message = "ERRORE DI VALIDAZIONE \n";
-//            for(ObjectError error : validation.getAllErrors()){
-//                message += error.getDefaultMessage() + "\n";
-//
-//            }
-//            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//
-//        }else {
-//            try{
-//                Map mappa = configurazioneCloud.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap());
-//
-//
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
+    @PostMapping(value = "/dipendenteConAvatar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = "application/json")
+    public ResponseEntity<?> postDipendenteAvatar(@RequestPart("avatar")MultipartFile avatar, @RequestPart @Validated DipendenteDTO dipendenteDTO, BindingResult validation){
+        if (validation.hasErrors()){
+            String message = "ERRORE DI VALIDAZIONE \n";
+            for(ObjectError error : validation.getAllErrors()){
+                message += error.getDefaultMessage() + "\n";
+
+            }
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+
+        }else {
+            try{
+                Map mappa = configurazioneCloud.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap());
+                String urlImage = mappa.get("secure_url").toString();
+                dipendenteDTO.setAvatar(urlImage);
+                long idDipendenteSalvato = dipendenteService.saveDipendente(dipendenteDTO);
+                return new ResponseEntity<>("dipendente inserito con id: " + idDipendenteSalvato, HttpStatus.CREATED);
+            } catch (Exception e) {
+                throw new RuntimeException("errore nell inserimento del dipendente con l avatar" + e);
+            }
+        }
+    }
 
 
     // GET(ALL)

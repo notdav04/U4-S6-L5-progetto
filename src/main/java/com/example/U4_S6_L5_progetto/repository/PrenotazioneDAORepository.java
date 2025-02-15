@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public interface PrenotazioneDAORepository extends JpaRepository<Prenotazione, Long> {
 
-    //@Query("SELECT p FROM Prenotazione p WHERE p.data = :data AND p.dipendente.id = :dipendenteId")
+
     public List<Prenotazione> findByDataAndDipendente( LocalDate data, Dipendente dipendente);
+
+    //la riga "prevenire la prenotazione di viaggi per dipendenti gia impegnati in altre date" era poco chiara e l ho interpretata cosi:
+    //se il dipendente ha gia prenotato un viaggio non puo prenotarne un altro.
+    public List<Prenotazione> findByDipendente(Dipendente dipendente);
 }
