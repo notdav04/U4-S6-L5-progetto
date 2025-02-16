@@ -30,6 +30,6 @@ public class DipendenteDTO {
     @URL
     private String avatar;
 
-//    private List<Prenotazione> listaPrenotazioni;
+
 
 }

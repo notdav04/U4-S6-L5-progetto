@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+//HO IMPLEMENTATO ANCHE IL DAO DI PRENOTAZIONE IN QUANTO NON TROVAVO SOLUZIONE PER POTER SALVARE UNA PRENOTAZIONE SENZA DAO
 public interface PrenotazioneDAORepository extends JpaRepository<Prenotazione, Long> {
 
 

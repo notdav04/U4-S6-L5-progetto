@@ -32,6 +32,4 @@ public class Dipendente {
 
     private String avatar;
 
-//    @OneToMany
-//    private List<Prenotazione> prenotazioni= new ArrayList<>();
 }

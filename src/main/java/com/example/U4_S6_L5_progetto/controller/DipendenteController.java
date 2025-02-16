@@ -18,7 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.naming.Binding;
+
 import java.util.Map;
 
 @RestController
@@ -48,6 +48,7 @@ public class DipendenteController {
     }
 
     //------------------POST CON IMMAGINE AVATAR DIPENDENTE------------
+    //HO DECISO DI SCRIVERE UN POST CON ENDPOINT DIVERSO PER IL DIPENDENTE CON L AVATAR PER FISSARE MEGLIO IL CONCETTO DI INCLUSIONE E FUNZIONAMENTO DI CLOUDINARY
     @PostMapping(value = "/dipendenteConAvatar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = "application/json")
     public ResponseEntity<?> postDipendenteAvatar(@RequestPart("avatar")MultipartFile avatar, @RequestPart @Validated DipendenteDTO dipendenteDTO, BindingResult validation){
         if (validation.hasErrors()){
